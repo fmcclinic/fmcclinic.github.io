@@ -21,28 +21,34 @@
     <div id="result" class="result"></div>
 
     <script>
-        async function testClaudeAPI() {
-            const result = document.getElementById('result');
-            try {
-                const response = await fetch('https://fmc-chat-c7fwgqz50-fmcclinics-projects.vercel.app/api/claude', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({
-                        model: 'claude-3-opus-20240229',
-                        messages: [{
-                            role: 'user',
-                            content: 'Hello Claude!'
-                        }]
-                    })
-                });
-                const data = await response.json();
-                result.textContent = JSON.stringify(data, null, 2);
-            } catch (error) {
-                result.textContent = 'Error: ' + error.message;
-            }
-        }
+
+
+async function testClaudeAPI() {
+    const result = document.getElementById('result');
+    try {
+        const response = await fetch('https://fmc-chat-dy991u4av-fmcclinics-projects.vercel.app/api/claude', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                model: 'claude-3-opus-20240229',
+                messages: [{
+                    role: 'user',
+                    content: 'Hello Claude!'
+                }]
+            })
+        });
+        const data = await response.json();
+        result.textContent = JSON.stringify(data, null, 2);
+    } catch (error) {
+        result.textContent = 'Error: ' + error.message;
+    }
+}
+
+
+
+
     </script>
 </body>
 </html>
