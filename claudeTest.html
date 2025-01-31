@@ -26,19 +26,19 @@
 async function testClaudeAPI() {
     const result = document.getElementById('result');
     try {
-        const response = await fetch('https://fmc-chat-78dsqom18-fmcclinics-projects.vercel.app/api/claude', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-                model: 'claude-3-opus-20240229',
-                messages: [{
-                    role: 'user',
-                    content: 'Hello Claude!'
-                }]
-            })
-        });
+        const response = await fetch('https://fmc-chat-5ml4cdper-fmcclinics-projects.vercel.app/api/claude', {
+    method: 'POST',
+    headers: {
+        'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({
+        model: 'claude-3-opus-20240229',
+        messages: [{
+            role: 'user',
+            content: 'Hello Claude!'
+        }]
+    })
+});
         const data = await response.json();
         result.textContent = JSON.stringify(data, null, 2);
     } catch (error) {
