@@ -1,52 +1,95 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Claude API Test</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>API Test with CORS Proxy</title>
     <style>
         body {
-            padding: 20px;
-            font-family: Arial;
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 0 20px;
         }
-        .result {
+        .container {
+            background-color: #f5f5f5;
+            padding: 20px;
+            border-radius: 5px;
+        }
+        .button {
+            background-color: #4CAF50;
+            border: none;
+            color: white;
+            padding: 15px 32px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            margin: 4px 2px;
+            cursor: pointer;
+            border-radius: 4px;
+        }
+        #result {
             margin-top: 20px;
             padding: 10px;
-            background: #f5f5f5;
-            white-space: pre-wrap;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+        .error {
+            color: red;
         }
     </style>
 </head>
 <body>
-    <h2>Claude API Test</h2>
-    <button onclick="testClaudeAPI()">Test Claude API</button>
-    <div id="result" class="result"></div>
+    <div class="container">
+        <h1>API Test với CORS Proxy</h1>
+        
+        <div>
+            <input type="text" id="apiUrl" style="width: 70%; padding: 10px;" 
+                placeholder="Nhập API URL (ví dụ: https://api.example.com/data)">
+        </div>
+        
+        <div style="margin-top: 20px;">
+            <button class="button" onclick="testAPI()">Test API</button>
+        </div>
+        
+        <div id="result">
+            Kết quả sẽ hiện ở đây...
+        </div>
+    </div>
 
     <script>
+        async function testAPI() {
+            const apiUrl = document.getElementById('apiUrl').value;
+            const resultDiv = document.getElementById('result');
+            
+            if (!apiUrl) {
+                resultDiv.innerHTML = '<span class="error">Vui lòng nhập API URL!</span>';
+                return;
+            }
 
-
-async function testClaudeAPI() {
-    const result = document.getElementById('result');
-    try {
-        const response = await fetch('https://fmc-chat-5ml4cdper-fmcclinics-projects.vercel.app/api/claude', {
-    method: 'POST',
-    headers: {
-        'Content-Type': 'application/json'
-    },
-    body: JSON.stringify({
-        model: 'claude-3-opus-20240229',
-        messages: [{
-            role: 'user',
-            content: 'Hello Claude!'
-        }]
-    })
-});
-        const data = await response.json();
-        result.textContent = JSON.stringify(data, null, 2);
-    } catch (error) {
-        result.textContent = 'Error: ' + error.message;
-        console.error('Full error:', error);
-    }
-}
-
+            try {
+                // Thêm CORS proxy vào trước URL
+                const proxyUrl = `https://corsproxy.io/?${encodeURIComponent(apiUrl)}`;
+                
+                resultDiv.innerHTML = 'Đang gọi API...';
+                
+                const response = await fetch(proxyUrl);
+                const data = await response.json();
+                
+                // Hiển thị kết quả đã format
+                resultDiv.innerHTML = `
+                    <h3>Kết quả:</h3>
+                    <pre>${JSON.stringify(data, null, 2)}</pre>
+                `;
+            } catch (error) {
+                resultDiv.innerHTML = `
+                    <span class="error">
+                        Lỗi: ${error.message}
+                    </span>
+                `;
+            }
+        }
     </script>
 </body>
 </html>
